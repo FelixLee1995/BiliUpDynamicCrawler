@@ -10,6 +10,7 @@ def accessDynamicByUp(bilimid, end):
         if offset == -1:
             break
         offset = accessDynamic(bilimid, offset, end)
+    service.refreshUpdateTime(bilimid)
 
 
 def accessDynamic(bilimid, offset_dynamicID, end):

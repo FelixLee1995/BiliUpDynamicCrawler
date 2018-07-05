@@ -3,7 +3,7 @@ import json
 import service
 
 
-def accessDynamicByUp(bilimid,end):
+def accessDynamicByUp(bilimid, end):
     offset = '0'
     flag = True
     while flag:
@@ -31,12 +31,16 @@ def resp2dynamiclist(respcontent,end):
     dynamiclist = []
     jsoncontent= json.loads(respcontent)
     print(jsoncontent)
+    if 'data' not in jsoncontent:
+        return -1
+    if 'cards' not in jsoncontent['data']:
+        return -1
     dynamiclist = jsoncontent['data']['cards']
     offset = 0
     print(len(dynamiclist))
     for item in dynamiclist:
         offset = item['desc']['dynamic_id']
-        if offset > end:
+        if item['desc']['timestamp'] > end:
             service.insertDynamic(item)
         else:
             return -1

@@ -1,4 +1,5 @@
 {
+  "mongourl": "mongodb://localhost:27017/",
   "interval": 900,
   "startTimestamp": 1514736000,
   "upList": [

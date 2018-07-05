@@ -20,3 +20,8 @@ def loadStartTimeStamp():
     with open('conf.json', 'r') as json_f:
         json_dict = json.load(json_f)
         return json_dict['startTimestamp']
+
+def loadMongoUrl():
+    with open('conf.json', 'r') as json_f:
+        json_dict = json.load(json_f)
+        return json_dict['mongourl']

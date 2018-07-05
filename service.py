@@ -16,4 +16,10 @@ def getEndTimeStamp(upid, originTime):
 
 
 def insertDynamic(dynamic):
-    upinfo
+    d1 = dynamic['desc']
+    d1['card'] = dynamic['card']
+    print(d1)
+    key = {'dynamic_id': dynamic['desc']['dynamic_id']}
+    dycol = db['dynamic']
+    dycol.update(key, d1, upsert=True)
+

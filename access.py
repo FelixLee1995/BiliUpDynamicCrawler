@@ -1,12 +1,15 @@
 import requests
 import json
+import service
 
 
 def accessDynamicByUp(bilimid,end):
     offset = '0'
     flag = True
     while flag:
-       res = accessDynamic(bilimid, offset, end)
+        if offset == -1:
+            break
+        offset = accessDynamic(bilimid, offset, end)
 
 
 def accessDynamic(bilimid, offset_dynamicID, end):
@@ -19,19 +22,29 @@ def accessDynamic(bilimid, offset_dynamicID, end):
     else:
         url = 'https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=' + str(bilimid) + '&offset_dynamic_id=' + str(offset_dynamicID)
     resp = requests.get(url,  headers=headers)
-    resp2dynamiclist(resp.content.decode('utf-8'))
+    return resp2dynamiclist(resp.content.decode('utf-8'), end)
 
     # return resp.content.decode('utf-8')
 
 
-def resp2dynamiclist(respcontent):
+def resp2dynamiclist(respcontent,end):
     dynamiclist = []
     jsoncontent= json.loads(respcontent)
+    print(jsoncontent)
     dynamiclist = jsoncontent['data']['cards']
+    offset = 0
+    print(len(dynamiclist))
     for item in dynamiclist:
-        print(item)
-
+        offset = item['desc']['dynamic_id']
+        if offset > end:
+            service.insertDynamic(item)
+        else:
+            return -1
+    if offset != 0:
+        return offset
+    else:
+        return -1
 
 if __name__ == '__main__':
-    html = accessDynamic(19553445,'135410981585192451',1514736000)
+    accessDynamicByUp(19553445, 1514736000)
     # print(html)
